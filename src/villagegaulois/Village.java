@@ -23,7 +23,7 @@ public class Village {
 		public void utiliserEtal(int indiceEtal, Gaulois vendeur
 				, String produit, int nbProduit) {
 			System.out.println("Le vendeur " + vendeur.getNom() + " s'installe"
-					+ " sur l'etal n°" + (indiceEtal+1));
+					+ " sur l'etal nï¿½" + (indiceEtal+1));
 			etals[indiceEtal].occuperEtal(vendeur, produit, nbProduit);
 		}
 		
@@ -65,14 +65,17 @@ public class Village {
 			return null;
 		}
 		
-		public void afficherMarche(){
+		public String afficherMarche(){
+			StringBuilder chaine = new StringBuilder();
 			int i = 0;
-			while(etals[i].isEtalOccupe()) {
-				etals[i].afficherEtal();
-				i++;
+			for(int j = 0; j < etals.length; j++) {
+				if(etals[j].isEtalOccupe()) {
+					chaine.append(etals[j].afficherEtal());
+					i++;
+				}
 			}
-			System.out.println("Il reste " + (etals.length - i) + " etals non utilises dans le marche.\n");
-			
+			chaine.append("Il reste " + (etals.length - i) + " etals non utilises dans le marche.\n");
+			return chaine.toString();
 		}
 	}
 	
@@ -110,7 +113,7 @@ public class Village {
 			}
 		}
 		return null;
-	}
+	}		
 
 	public String afficherVillageois() {
 		StringBuilder chaine = new StringBuilder();
@@ -155,10 +158,26 @@ public class Village {
 		}
 		chaine.append(vendeur.getNom() + " cherche un endroit pour vendre " + nbProduit + " " +
 				produit + ".\n");
+		
 		return chaine.toString();
 	}
 	
-//	public Etal rechercherEtal(Gaulois vendeur) {
-//		
-//	}
+	public Etal rechercherEtal(Gaulois vendeur) {
+		return marche.trouverVendeur(vendeur);
+	}
+	
+	public String partirVendeur(Gaulois vendeur) {
+		Etal partir = marche.trouverVendeur(vendeur);
+		return partir.libererEtal();
+	}
+	
+	public String afficherMarche() {
+		StringBuilder chaine = new StringBuilder();
+		if(marche.etals.length <= 0) {
+			chaine.append("Malheureusement, il n'y a aucun Ã©tal dans ce marche.\n");
+		}else {
+			chaine.append("Le marche du village \"" + this.getNom() + "\" possede plusieurs etals :\n");
+		}
+		chaine.append(marche.afficherMarche());
+		return chaine.toString();	}
 }
