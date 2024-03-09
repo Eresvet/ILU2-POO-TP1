@@ -4,7 +4,7 @@ import personnages.Gaulois;
 
 public class Etal {
 	private Gaulois vendeur;
-	private String produit;
+	private String produit;		
 	private int quantiteDebutMarche;
 	private int quantite;
 	private boolean etalOccupe = false;
@@ -27,8 +27,12 @@ public class Etal {
 
 	public String libererEtal() {
 		etalOccupe = false;
-		StringBuilder chaine = new StringBuilder(
-				"Le vendeur " + vendeur.getNom() + " quitte son étal, ");
+		StringBuilder chaine = new StringBuilder();
+		try {chaine.append("Le vendeur " + vendeur.getNom() + " quitte son étal, ");
+		} catch(Exception e) {
+			System.out.println("Il n'y a pas de vendeur à cet etal.\n");
+		}
+		
 		int produitVendu = quantiteDebutMarche - quantite;
 		if (produitVendu > 0) {
 			chaine.append(
