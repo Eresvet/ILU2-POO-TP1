@@ -1,5 +1,7 @@
 	package villagegaulois;
 
+import java.awt.print.Printable;
+
 import personnages.Gaulois;
 
 public class Etal {
@@ -54,6 +56,14 @@ public class Etal {
 	public String acheterProduit(int quantiteAcheter, Gaulois acheteur) {
 
 		StringBuilder chaine = new StringBuilder();
+		
+		if(!etalOccupe) {
+			try {
+				throw new IllegalStateException("l'etal n'est pas occupee");
+			}catch(IllegalStateException e) {
+				e.printStackTrace();
+			}
+		}
 		try {
 		chaine.append(acheteur.getNom() + " veut acheter " + quantiteAcheter
 				+ " " + produit + " à " + vendeur.getNom());
@@ -72,6 +82,13 @@ public class Etal {
 			quantite = 0;
 		}
 		if (quantite != 0) {
+			if(quantite < 1 || quantiteAcheter < 1) {
+				try {
+					throw new IllegalArgumentException("la quantite est negative");
+				}catch (IllegalArgumentException e){
+					e.printStackTrace();
+				}
+			}
 			quantite -= quantiteAcheter;
 			chaine.append(". " + acheteur.getNom()
 					+ ", est ravi de tout trouver sur l'étal de "
