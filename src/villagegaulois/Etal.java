@@ -30,7 +30,7 @@ public class Etal {
 	public String libererEtal() {
 		etalOccupe = false;
 		StringBuilder chaine = new StringBuilder();
-		try {chaine.append("Le vendeur " + vendeur.getNom() + " quitte son étal, ");
+		try {chaine.append("Le vendeur " + vendeur.getNom() + " quitte son etal, ");
 		} catch(Exception e) {
 			System.out.println("Il n'y a pas de vendeur à cet etal.\n");
 		}
@@ -47,23 +47,23 @@ public class Etal {
 
 	public String afficherEtal() {
 		if (this.etalOccupe) {
-			return "L'étal de " + vendeur.getNom() + " est garni de " + quantite
+			return "L'etal de " + vendeur.getNom() + " est garni de " + quantite
 					+ " " + produit + "\n";
 		}
-		return "L'étal est libre";
+		return "L'etal est libre";
 	}
 
-	public String acheterProduit(int quantiteAcheter, Gaulois acheteur) {
-
+	public String acheterProduit(int quantiteAcheter, Gaulois acheteur) throws IllegalStateException, IllegalArgumentException {
+		
+		if(quantite < 0 || quantiteAcheter < 0) {
+			throw new IllegalArgumentException("la quantite est negative");
+		}
+		if(!etalOccupe) {
+			throw new IllegalStateException("l'etal n'est pas occupee");
+		}
+		
 		StringBuilder chaine = new StringBuilder();
 		
-		if(!etalOccupe) {
-			try {
-				throw new IllegalStateException("l'etal n'est pas occupee");
-			}catch(IllegalStateException e) {
-				e.printStackTrace();
-			}
-		}
 		try {
 		chaine.append(acheteur.getNom() + " veut acheter " + quantiteAcheter
 				+ " " + produit + " à " + vendeur.getNom());
@@ -76,22 +76,15 @@ public class Etal {
 		}
 		if (quantiteAcheter > quantite) {
 			chaine.append(", comme il n'y en a plus que " + quantite + ", "
-					+ acheteur.getNom() + " vide l'étal de "
+					+ acheteur.getNom() + " vide l'etal de "
 					+ vendeur.getNom() + ".\n");
 			quantiteAcheter = quantite;
 			quantite = 0;
 		}
 		if (quantite != 0) {
-			if(quantite < 1 || quantiteAcheter < 1) {
-				try {
-					throw new IllegalArgumentException("la quantite est negative");
-				}catch (IllegalArgumentException e){
-					e.printStackTrace();
-				}
-			}
 			quantite -= quantiteAcheter;
 			chaine.append(". " + acheteur.getNom()
-					+ ", est ravi de tout trouver sur l'étal de "
+					+ ", est ravi de tout trouver sur l'etal de "
 					+ vendeur.getNom() + "\n");
 		}
 		return chaine.toString();
